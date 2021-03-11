@@ -6,6 +6,12 @@ import (
 	"testing"
 )
 
+func TestNewDnsProbeUrl(t *testing.T) {
+	u, _ := url.Parse("https://httpbin.org/get")
+	_,ok := NewDnsProbeUrl(u)()
+	assert.True(t, ok)
+}
+
 func TestNewDnsProbeFail(t *testing.T) {
 	_,ok := NewDnsProbe("none")()
 	assert.False(t, ok)

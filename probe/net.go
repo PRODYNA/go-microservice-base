@@ -6,6 +6,11 @@ import (
 	"net/url"
 )
 
+func NewDnsProbeUrl(url *url.URL) func() (string, bool) {
+	return NewDnsProbe(url.Host)
+}
+
+
 func NewDnsProbe(url string) func() (string, bool) {
 	return func() (string, bool) {
 		adr, err := net.LookupHost(url)
