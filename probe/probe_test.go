@@ -27,10 +27,6 @@ func TestStartProbe(t *testing.T) {
 	assert.True(t, p.verifyStart())
 }
 
-
-type MockResponseWriter struct {}
-
-
 func TestServeHttp(t *testing.T) {
 	p := NewProbeService()
 	p.AddStart(NewGoRoutineProbe(10))
