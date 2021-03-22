@@ -34,6 +34,7 @@ func TestNewHttpClient(t *testing.T) {
 	data, _ := ioutil.ReadAll(res.Body)
 
 	assert.Contains(t,  string(data), "B3-Parentspanid\": \"434242442342423\"")
+
 }
 
 
