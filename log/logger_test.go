@@ -14,6 +14,7 @@ func TestLogger(t *testing.T) {
 	//log.Error("op", "msg")
 
 	l2 := log.Logger(log, "adapter")
+	l3 := log.Logger(l2, "xyz")
 
 	//l2.Error("op", "msg", context.Background())
 
@@ -27,5 +28,5 @@ func TestLogger(t *testing.T) {
 
 	ctx := trace.CreateTraceContext(h)
 
-	l2.Error("op", "msg", m, ctx)
+	l3.Error("op", "msg", m, ctx)
 }

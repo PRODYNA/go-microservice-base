@@ -14,6 +14,7 @@ func NewRequest(ctx context.Context, method string, url string) (*http.Request, 
 		return nil, err
 	}
 
+	// TODO check type
 	traceCtx := ctx.Value(trace.TraceContextKey).(trace.TraceContext)
 
 	req.Header.Set(trace.SpanId, traceCtx.SpanId)

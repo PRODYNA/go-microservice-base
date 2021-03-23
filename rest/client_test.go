@@ -3,7 +3,6 @@ package rest
 import (
 	"github.com/prodyna/go-microservice-base/trace"
 	"github.com/stretchr/testify/assert"
-	"io/ioutil"
 	"net/http"
 	"testing"
 	"time"
@@ -19,6 +18,7 @@ func TestNewHttpClient(t *testing.T) {
 	ctx := trace.CreateTraceContext(h)
 
 	c := http.Client{Timeout: 10 * time.Second}
+	c.Transport = Mock{}
 
 	request,err := NewRequest(ctx, "GET", "https://httpbin.org/headers")
 	if err != nil {
@@ -31,11 +31,16 @@ func TestNewHttpClient(t *testing.T) {
 		assert.Fail(t, err.Error())
 	}
 
-	data, _ := ioutil.ReadAll(res.Body)
-
-	assert.Contains(t,  string(data), "B3-Parentspanid\": \"434242442342423\"")
-
+	assert.Contains(t, "434242442342423", res.Header.Get(trace.ParentSpanId))
 }
 
+type Mock struct {}
+
+func (m Mock) RoundTrip(r *http.Request) (*http.Response, error) {
+	res := http.Response{
+		Header: r.Header.Clone(),
+	}
+	return  &res, nil
+}
 
 
