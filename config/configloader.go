@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"gopkg.in/yaml.v3"
+	"io/ioutil"
 	"os"
 	"reflect"
 	"strings"
@@ -20,7 +21,11 @@ func LoadConfig(data []byte, cfg interface{}) {
 }
 
 func YamlFile(file string) []byte {
-	return []byte("data")
+	data, err :=  ioutil.ReadFile(file)
+	if err != nil {
+		return []byte{}
+	}
+	return data
 }
 
 func resolvePasswords(cfg interface{}) {
