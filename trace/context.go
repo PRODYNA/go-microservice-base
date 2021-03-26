@@ -20,6 +20,8 @@ type TraceContext struct {
 	Sampled      string
 }
 
+// CreateTraceContext constructs a context.Context with a struct of type TraceContext filled
+// with the Zipkin/B3 Headers.
 func CreateTraceContext(h http.Header) context.Context {
 
 	tx := TraceContext{
