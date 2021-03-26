@@ -11,15 +11,15 @@ type ServiceError struct {
 }
 
 func (s ServiceError) Error() string {
-	return fmt.Sprintf("message: %s, Status %d", s.Message, s.Status)
+	return fmt.Sprintf("message: %s, MinStatus %d", s.Message, s.Status)
 }
 
 func (s ServiceError) ErrorJson() string {
-	return fmt.Sprintf("{ message: \"%s\", Status: %d }", s.Message, s.Status)
+	return fmt.Sprintf("{ message: \"%s\", MinStatus: %d }", s.Message, s.Status)
 }
 
 func (s ServiceError) ErrorJsonBytes() []byte {
-	return []byte(fmt.Sprintf("{ message: \"%s\", Status: %d }", s.Message, s.Status))
+	return []byte(fmt.Sprintf("{ message: \"%s\", MinStatus: %d }", s.Message, s.Status))
 }
 
 func NewError(message string, status int) error {
