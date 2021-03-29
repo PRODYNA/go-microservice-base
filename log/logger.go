@@ -65,6 +65,21 @@ func RootLoggerCtx(id string, level LogLevel) *Logger {
 	}
 }
 
+func Field(k,v string) func() (string,string) {
+	return func() (string, string) {
+		return k, v
+	}
+}
+
+func Fields(kvp ...func() (string, string)) map[string]string {
+	m := make(map[string]string)
+	for _,p:= range kvp {
+		k,v := p()
+		m[k] = v
+	}
+	return m
+}
+
 func RootLogger(id string, level LogLevel) *Logger {
 	return &Logger{
 		Level:   level,
