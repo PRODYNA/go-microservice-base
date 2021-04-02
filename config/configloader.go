@@ -32,6 +32,11 @@ func resolvePasswords(cfg interface{}) {
 
 	v := reflect.ValueOf(cfg)
 
+	resolveEnvironment(v)
+}
+
+func resolveEnvironment(v reflect.Value) {
+
 	if v.Kind() == reflect.Ptr && !v.IsNil() {
 		v = v.Elem()
 	}
@@ -45,6 +50,8 @@ func resolvePasswords(cfg interface{}) {
 				value.SetString(os.Getenv(env))
 			}
 
+		} else if value.Kind() == reflect.Struct {
+			resolveEnvironment(value)
 		}
 	}
 }
