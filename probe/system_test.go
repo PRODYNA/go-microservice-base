@@ -14,7 +14,7 @@ func TestNewGoRoutineProbe(t *testing.T) {
 }
 
 func TestNewMemoryProbe(t *testing.T) {
-	_, ok := NewMemoryProbe(1000000)()
+	_, ok := NewMemoryProbe(10000000)()
 	assert.True(t, ok)
 
 	_, nok := NewMemoryProbe(1)()

@@ -22,7 +22,7 @@ url: test
 userId: userid
 password: ${ENV:SECRET_PWD}
 nested:
-  pwd: ${ENV:NESTED_SECRET_PWD}
+  pwd: ${env:NESTED_SECRET_PWD}
 `
 
 func TestLoadConfig(t *testing.T) {
@@ -35,4 +35,12 @@ func TestLoadConfig(t *testing.T) {
 	assert.Equal(t, "secure", c.Password)
 	assert.Equal(t, "moresecure", c.Nested.Pwd)
 
+}
+
+
+func Test_YamlFile(t *testing.T) {
+
+	b := YamlFile("config.yml")
+	assert.NotNil(t, b)
+	
 }

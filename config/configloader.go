@@ -21,11 +21,40 @@ func LoadConfig(data []byte, cfg interface{}) {
 }
 
 func YamlFile(file string) []byte {
-	data, err :=  ioutil.ReadFile(file)
+	data, err :=  ioutil.ReadFile(getFileName(file))
 	if err != nil {
 		return []byte{}
 	}
 	return data
+}
+
+
+func getFileName(file string) string {
+
+	f, err := os.Stat(file)
+	if err == nil && !f.IsDir() {
+		return file
+	}
+
+	fn := "config/" + file
+	f, err = os.Stat(fn)
+	if err == nil && !f.IsDir() {
+		return fn
+	}
+
+	fn = "./config/" + file
+	f, err = os.Stat(fn)
+	if err == nil && !f.IsDir() {
+		return fn
+	}
+
+	fn = "/config/" + file
+	f, err = os.Stat(fn)
+	if err == nil && !f.IsDir() {
+		return fn
+	}
+
+	return file
 }
 
 func resolvePasswords(cfg interface{}) {
@@ -45,7 +74,7 @@ func resolveEnvironment(v reflect.Value) {
 		value := v.Field(i)
 		if value.Kind() == reflect.String {
 			cv := value.String()
-			if strings.HasPrefix(cv, "${ENV:") && strings.HasSuffix(cv, "}") {
+			if strings.HasPrefix(strings.ToLower(cv), "${env:") && strings.HasSuffix(cv, "}") {
 				env := extractVariable(cv)
 				value.SetString(os.Getenv(env))
 			}
@@ -57,6 +86,9 @@ func resolveEnvironment(v reflect.Value) {
 }
 
 func extractVariable(s string) string {
+	// TODO use regex for replace
 	s = strings.Replace(s, "${ENV:", "", 1)
+	s = strings.Replace(s, "${Env:", "", 1)
+	s = strings.Replace(s, "${env:", "", 1)
 	return strings.Replace(s, "}", "", 1)
 }
